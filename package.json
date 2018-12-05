@@ -1,0 +1,35 @@
+{
+  "name": "rest-api-tutorial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --tls-cipher-list=ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384 main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://medbecha.kaaniche.xyz/t-iot-tutorial/nodejs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://medbecha.kaaniche.xyz/t-iot-tutorial/nodejs/issues"
+  },
+  "homepage": "https://medbecha.kaaniche.xyz/t-iot-tutorial/nodejs",
+  "dependencies": {
+    "bcrypt": "^3.0.2",
+    "body-parser": "1.18.3",
+    "express": "^4.16.4",
+    "helmet": "^3.14.0",
+    "jsonwebtoken": "^8.3.0",
+    "moment": "^2.22.2",
+    "moment-timezone": "^0.5.21",
+    "mongoose": "^5.3.14",
+    "nodemon": "^1.18.6",
+    "spdy": "^4.0.0",
+    "swagger-ui-express": "^4.0.1",
+    "sync-request": "^6.0.0",
+    "uuid": "^3.3.2"
+  }
+}
