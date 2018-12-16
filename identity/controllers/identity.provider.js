@@ -8,7 +8,9 @@ exports.insert = (req, res) => {
     IdentityModel.createIdentity(req.body)
         .then((result) => {
             res.status(201).send({id: result._id});
-        });    
+        }).catch(function (error) {
+            console.error(error)
+          });    
 };
 exports.list = (req, res) => {
     let limit = req.query.limit && req.query.limit <= 100 ? parseInt(req.query.limit) : 10;
@@ -22,14 +24,18 @@ exports.list = (req, res) => {
     IdentityModel.list(limit, page)
         .then((result) => {
             res.status(200).send(result);
-        })
+        }).catch(function (error) {
+            console.error(error)
+          });
 };
 
 exports.getById = (req, res) => {
     IdentityModel.findById(req.params.userId)
         .then((result) => {
             res.status(200).send(result);
-        });
+        }).catch(function (error) {
+            console.error(error)
+          });
 };
 
 exports.putByEmail = (req, res) => {
@@ -43,8 +49,12 @@ exports.putByEmail = (req, res) => {
             IdentityModel.putIdentity(result._id, req.body)
             .then((result)=>{
             req.status(204).send({});
-        });
-    });    
+        }).catch(function (error) {
+            console.error(error)
+          });
+    }).catch(function (error) {
+        console.error(error)
+      });    
 };
 
 exports.patchByEmail = (req, res) => {
@@ -55,7 +65,9 @@ exports.patchByEmail = (req, res) => {
     }
     IdentityModel.patchIdentity(req.params.email, req.body).then((result) => {
         res.status(204).send(result);
-    });
+    }).catch(function (error) {
+        console.error(error)
+      });
 };
 
 exports.removeByEmail = (req, res) => {
@@ -64,6 +76,8 @@ exports.removeByEmail = (req, res) => {
             IdentityModel.removeById(result._id)
             .then((result)=>{
             res.status(204).send({});
-        });
+        }).catch(function (error) {
+            console.error(error)
+          });
     });
 };

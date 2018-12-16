@@ -23,14 +23,18 @@ exports.list = (req, res) => {
     SupervisorModel.list(limit, page)
         .then((result) => {
             res.status(200).send(result);
-        })
+        }).catch(function (error) {
+            console.error(error)
+          });
 };
 
 exports.getById = (req, res) => {
     SupervisorModel.findById(req.params.userId)
         .then((result) => {
             res.status(200).send(result);
-        });
+        }).catch(function (error) {
+            console.error(error)
+          });
 };
 
 exports.putByEmail = (req, res) => {
@@ -44,7 +48,9 @@ let salt = crypto.randomBytes(16).toString('base64');
             SupervisorModel.putSupervisor(result._id, req.body)
             .then((result)=>{
             req.status(204).send({});
-        });
+        }).catch(function (error) {
+            console.error(error)
+          });
     });    
 };
 
@@ -57,7 +63,9 @@ exports.patchByEmail = (req, res) => {
     }
     SupervisorModel.patchSupervisor(req.params.email, req.body).then((result) => {
         res.status(204).send(result);
-    });
+    }).catch(function (error) {
+        console.error(error)
+      });
 };
 
 exports.removeByEmail = (req, res) => {
@@ -66,6 +74,10 @@ exports.removeByEmail = (req, res) => {
             SupervisorModel.removeById(result._id)
             .then((result)=>{
             res.status(204).send({});
-        });
-    });
+        }).catch(function (error) {
+            console.error(error)
+          });
+    }).catch(function (error) {
+        console.error(error)
+      });
 };
