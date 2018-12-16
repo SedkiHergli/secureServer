@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://IOT:123456@localhost:27017/smart_care',{useNewUrlParser: true});
+mongoose.connect('mongodb://IOT:123456@localhost:27017/smart_care',{useCreateIndex: true,useNewUrlParser: true});
 const Schema = mongoose.Schema;
 
 const sensorSchema = new Schema({
