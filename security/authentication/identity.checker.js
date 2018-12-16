@@ -1,5 +1,5 @@
 const IdentityModel = require('../../identity/models/identity.model');
-const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const uuidv4 = require('uuid/v4');
 const validityTime = require('../../env.config.js').jwtValidityTimeInSeconds;
 
@@ -30,11 +30,10 @@ exports.isPasswordAndUserMatch = (req, res, next) => {
             if(!user[0]){
                 res.status(404).send({});
             }else{
-                /*let passwordFields = user[0].password.split('$');
+                let passwordFields = user[0].password.split('$');
                 let salt = passwordFields[0];
-                let hash = crypto.scryptSync(req.body.password,salt,64,{N:16384}).toString("base64");*/
-                bcrypt.compare(req.body.password,user[0].password).then(function(res) {
-                if (res) {
+                let hash = crypto.scryptSync(req.body.password,salt,64,{N:16384}).toString("base64");
+                if (hash === passwordFields[1]) {
                     var now = Math.floor(Date.now() / 1000);
                     req.body = {
                         //iss: 'urn:kaaniche.xyz',
@@ -56,7 +55,7 @@ exports.isPasswordAndUserMatch = (req, res, next) => {
                     return next();
                 } else {
                     return res.status(400).send({errors: ['Invalid e-mail or password']});
-                }}).catch((err)=>next(err));
+                }
             }}).catch((err) => next(err));
 };
 

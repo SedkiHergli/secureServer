@@ -1,23 +1,14 @@
 const IdentityModel = require('../models/identity.model');
-const bcrypt = require('bcrypt');
-saltRounds=10;
+const crypto = require('crypto');
 exports.insert = (req, res) => {
-    //let salt = crypto.randomBytes(16).toString('base64');
-    //let hash = crypto.scryptSync(req.body.password,salt,64,{N:16384}).toString("base64");
-    //req.body.password = salt + "$" + hash;   
-    bcrypt.genSalt(saltRounds).then(function(salt) {
-    bcrypt.hash(req.body.password, salt).then(function(hash) {
-        req.body.password = hash;
-        req.body.permissionLevel = 4;
-        IdentityModel.createIdentity(req.body)
+    let salt = crypto.randomBytes(16).toString('base64');
+    let hash = crypto.scryptSync(req.body.password,salt,64,{N:16384}).toString("base64");
+    req.body.password = salt + "$" + hash;
+    req.body.permissionLevel = 4;
+    IdentityModel.createIdentity(req.body)
         .then((result) => {
             res.status(201).send({id: result._id});
-        },(err) => { console.log(err); });
-        
-    },(err) => { console.log(err); });
-}).catch((err) => next(err));
-    
-    
+        });    
 };
 exports.list = (req, res) => {
     let limit = req.query.limit && req.query.limit <= 100 ? parseInt(req.query.limit) : 10;
@@ -43,17 +34,9 @@ exports.getById = (req, res) => {
 
 exports.putByEmail = (req, res) => {
     if (req.body.password) {
-        //let salt = crypto.randomBytes(16).toString('base64');
-        //let hash = crypto.scryptSync(req.body.password,salt,64,{N:16384}).toString("base64");
-        //req.body.password = salt + "$" + hash;
-        bcrypt.genSalt(saltRounds).then(function(salt) {
-            bcrypt.hash(req.body.password, salt).then(function(hash) {
-                req.body.password = hash;
-            },(err) => { console.log(err); });
-        }).catch((err) => next(err));
-        /*let salt = crypto.randomBytes(16).toString('base64');
+        let salt = crypto.randomBytes(16).toString('base64');
         let hash = crypto.scryptSync(req.body.password,salt,64,{N:16384}).toString("base64");
-        req.body.password = salt + "$" + hash;*/
+        req.body.password = salt + "$" + hash;
     }
     IdentityModel.find({email: req.params.email})
         .then((result) => {
@@ -66,17 +49,9 @@ exports.putByEmail = (req, res) => {
 
 exports.patchByEmail = (req, res) => {
     if (req.body.password) {
-        //let salt = crypto.randomBytes(16).toString('base64');
-        //let hash = crypto.scryptSync(req.body.password,salt,64,{N:16384}).toString("base64");
-        //req.body.password = salt + "$" + hash;
-        bcrypt.genSalt(saltRounds).then(function(salt) {
-            bcrypt.hash(req.body.password, salt).then(function(hash) {
-                req.body.password = hash;
-            },(err) => { console.log(err); });
-        }).catch((err) => next(err));
-        /*let salt = crypto.randomBytes(16).toString('base64');
+        let salt = crypto.randomBytes(16).toString('base64');
         let hash = crypto.scryptSync(req.body.password,salt,64,{N:16384}).toString("base64");
-        req.body.password = salt + "$" + hash;*/
+        req.body.password = salt + "$" + hash;
     }
     IdentityModel.patchIdentity(req.params.email, req.body).then((result) => {
         res.status(204).send(result);

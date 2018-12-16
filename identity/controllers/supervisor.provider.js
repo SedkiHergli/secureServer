@@ -1,23 +1,14 @@
 const SupervisorModel = require('../models/supervisor.model');
-const bcrypt = require('bcrypt');
-saltRounds=10;
+const crypto = require('crypto');
 exports.insert = (req, res) => {
-    bcrypt.genSalt(saltRounds).then(function(salt) {
-        bcrypt.hash(req.body.password, salt).then(function(hash) {
-            req.body.password = hash;
+            let salt = crypto.randomBytes(16).toString('base64');
+            let hash = crypto.scryptSync(req.body.password,salt,64,{N:16384}).toString("base64");
+            req.body.password = salt + "$" + hash;
             req.body.permissionLevel = 4;
             SupervisorModel.createSupervisor(req.body)
                 .then((result) => {
                     res.status(201).send({id: result._id});
                 },(err) => { console.log(err); });
-
-        },(err) => { console.log(err); });
-    }).catch((err) => next(err));
-    /*let salt = crypto.randomBytes(16).toString('base64');
-    let hash = crypto.scryptSync(req.body.password,salt,64,{N:16384}).toString("base64");
-    req.body.password = salt + "$" + hash;*/
-
-    
 };
 
 exports.list = (req, res) => {
@@ -44,14 +35,9 @@ exports.getById = (req, res) => {
 
 exports.putByEmail = (req, res) => {
     if (req.body.password) {
-        bcrypt.genSalt(saltRounds).then(function(salt) {
-            bcrypt.hash(req.body.password, salt).then(function(hash) {
-                req.body.password = hash;
-            },(err) => { console.log(err); });
-        }).catch((err) => next(err));
-        /*let salt = crypto.randomBytes(16).toString('base64');
+let salt = crypto.randomBytes(16).toString('base64');
         let hash = crypto.scryptSync(req.body.password,salt,64,{N:16384}).toString("base64");
-        req.body.password = salt + "$" + hash;*/
+        req.body.password = salt + "$" + hash;
     }
     SupervisorModel.find({email: req.params.email})
         .then((result) => {
@@ -65,14 +51,9 @@ exports.putByEmail = (req, res) => {
 exports.patchByEmail = (req, res) => {
     if (req.body.password) {
 
-       bcrypt.genSalt(saltRounds).then(function(salt) {
-            bcrypt.hash(req.body.password, salt).then(function(hash) {
-                req.body.password = hash;
-            },(err) => { console.log(err); });
-        }).catch((err) => next(err));
-        /*let salt = crypto.randomBytes(16).toString('base64');
+        let salt = crypto.randomBytes(16).toString('base64');
         let hash = crypto.scryptSync(req.body.password,salt,64,{N:16384}).toString("base64");
-        req.body.password = salt + "$" + hash;*/
+        req.body.password = salt + "$" + hash;
     }
     SupervisorModel.patchSupervisor(req.params.email, req.body).then((result) => {
         res.status(204).send(result);
