@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://IOT:sedkiamine9695@ds117164.mlab.com:17164/smart_care',{useNewUrlParser: true});
+mongoose.connect('mongodb://IOT:123456@localhost:27017/smart_care',{useNewUrlParser: true});
 const Schema = mongoose.Schema;
 
 const locationSchema = new Schema({
