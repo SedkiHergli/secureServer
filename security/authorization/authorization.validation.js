@@ -17,10 +17,10 @@ exports.validJWTNeeded = (req, res, next) => {
                 return next();
             }
         } catch (err) {
-            return res.status(403).send();
+            return res.status(403).send({"error":"Token invalid"});
         }
     } else {
-        return res.status(401).send();
+        return res.status(401).send({"error":"No authorization headers"});
     }
 };
 

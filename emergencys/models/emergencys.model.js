@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://IOT:123456@localhost:27017/smart_care',{useCreateIndex: true,useNewUrlParser: true});
+const config = require('../../env.config');
+mongoose.connect(config.server_url,{useCreateIndex: true,useNewUrlParser: true});
 const Schema = mongoose.Schema;
 
 const emergencySchema = new Schema({

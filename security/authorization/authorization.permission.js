@@ -10,7 +10,7 @@ exports.minimumPermissionLevelRequired = (required_permission_level) => {
         if (user_permission_level & required_permission_level) {
             return next();
         } else {
-            return res.status(403).send({"error":"You don't have the permession !!"});
+            return res.status(403).send({"error":"You don't have the permession Member!!"});
         }
     };
 };
@@ -35,7 +35,7 @@ exports.onlySameUserOrAdminCanDoThisAction = (req, res, next) => {
 exports.onlySameUserOrAdminOrSupervisorCanDoThisAction = (req, res, next) => {
 
     let user_permission_level = parseInt(req.jwt.roles);
-    let email = req.jwt.email;
+    let email = req.jwt.sub;
     let email_s = req.jwt.email_s;
     if ((req.params && req.params.email && email === req.params.email)||(req.params && req.params.email && email_s === req.params.email)) {
         return next();
@@ -43,7 +43,7 @@ exports.onlySameUserOrAdminOrSupervisorCanDoThisAction = (req, res, next) => {
         if (user_permission_level & Master) {
             return next();
         } else {
-            return res.status(403).send();
+            return res.status(403).send({"error":"only same user or admin or supervisor"});
         }
     }
 

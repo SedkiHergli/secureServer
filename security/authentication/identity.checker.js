@@ -50,7 +50,9 @@ exports.isPasswordAndUserMatch = (req, res, next) => {
                         phone: user[0].phone,
                         phone_s: user[0].phone_s,
                         name_s: user[0].name_s,
-                        email_s: user[0].email_s
+                        email_s: user[0].email_s,
+                        lat: user[0].lat,
+                        lng: user[0].lng
                     };
                     return next();
                 } else {
