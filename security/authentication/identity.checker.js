@@ -38,8 +38,8 @@ exports.isPasswordAndUserMatch = (req, res, next) => {
                     req.body = {
                         //iss: 'urn:kaaniche.xyz',
                         //aud: 'urn:'+(req.get('origin')?req.get('origin'):"kaaniche.xyz"),
-                        sub: user[0].email,
-                        name: user[0].fullName,
+                        email: user[0].email,
+                        fullName: user[0].fullName,
                         userId: user[0]._id,
                         roles: user[0].permissionLevel,
                         jti: uuidv4(),
@@ -62,7 +62,7 @@ exports.isPasswordAndUserMatch = (req, res, next) => {
 };
 
 exports.isUserStillExistsWithSamePrivileges = (req, res, next) => {
-    IdentityModel.findByEmail(req.body.sub)
+    IdentityModel.findByEmail(req.body.email)
         .then((user)=>{
             if(!user[0]){
                 res.status(404).send({});

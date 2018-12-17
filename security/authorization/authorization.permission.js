@@ -35,7 +35,7 @@ exports.onlySameUserOrAdminCanDoThisAction = (req, res, next) => {
 exports.onlySameUserOrAdminOrSupervisorCanDoThisAction = (req, res, next) => {
 
     let user_permission_level = parseInt(req.jwt.roles);
-    let email = req.jwt.sub;
+    let email = req.jwt.email;
     let email_s = req.jwt.email_s;
     if ((req.params && req.params.email && email === req.params.email)||(req.params && req.params.email && email_s === req.params.email)) {
         return next();
