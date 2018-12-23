@@ -29,15 +29,16 @@ exports.verifyRefreshBodyField = (req, res, next) => {
         return next();
     } else {
         return res.status(400).send({error: 'need to pass refresh_token field'});
-    }
+    } 
 };
 
 exports.validRefreshNeeded = (req, res, next) => {
-    let b = Buffer.from(req.body.refresh_token, 'base64');
-    let decoded = b.toString().split('$');
-    let salt = decoded[0];
+    let decoded = req.body.refresh_token.split('$');
+    let salt = decoded[0].toString('base64');
     let refresh_token = decoded[1];
-    let hash = crypto.createHmac('sha512', salt).update(req.jwt.user_id + refreshSecret + req.jwt.jti).digest("base64");
+    let hash = crypto.createHmac('sha512', salt).update(req.jwt.userId + refreshSecret + req.jwt.jti).digest("base64");
+    let bb = Buffer.from(hash);
+    hash = bb.toString('base64');
     if (hash === refresh_token) {
         req.body = req.jwt;
         return next();

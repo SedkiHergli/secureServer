@@ -85,9 +85,9 @@ exports.patchSupervisor = (email, userData) => {
     });
 };
 
-exports.removeById = (userId) => {
+exports.removeById = (email) => {
     return new Promise((resolve, reject) => {
-        Supervisor.remove({_id: userId}, (err) => {
+        Supervisor.deleteOne({email: email}, (err) => {
             if (err) {
                 reject(err);
             } else {

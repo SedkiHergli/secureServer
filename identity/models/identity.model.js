@@ -88,15 +88,15 @@ exports.patchIdentity = (email, userData) => {
     });
 };
 
-exports.removeById = (userId) => {
+exports.removeById = (email) => {
     return new Promise((resolve, reject) => {
-        Identity.remove({_id: userId}, (err) => {
+        Identity.deleteOne({email: email}, (err) => {
             if (err) {
                 reject(err);
             } else {
                 resolve(err);
             }
         });
-    });
+});
 };
 

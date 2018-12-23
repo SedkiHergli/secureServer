@@ -17,9 +17,10 @@ exports.minimumPermissionLevelRequired = (required_permission_level) => {
 
 exports.onlySameUserOrAdminCanDoThisAction = (req, res, next) => {
 
+
     let user_permission_level = parseInt(req.jwt.roles);
-    let userId = req.jwt.userId;
-    if (req.params && req.params.userId && userId === req.params.userId) {
+    let email = req.jwt.email;
+    if ((req.params && req.params.email && email === req.params.email)) {
         return next();
     } else {
         if (user_permission_level & Master) {
@@ -37,7 +38,8 @@ exports.onlySameUserOrAdminOrSupervisorCanDoThisAction = (req, res, next) => {
     let user_permission_level = parseInt(req.jwt.roles);
     let email = req.jwt.email;
     let email_s = req.jwt.email_s;
-    if ((req.params && req.params.email && email === req.params.email)||(req.params && req.params.email && email_s === req.params.email)) {
+    let email_u = req.jwt.email_u;
+    if ((req.params && req.params.email && email === req.params.email)||(req.params && req.params.email && email_s === req.params.email)||(req.params && req.params.email && email_u === req.params.email)) {
         return next();
     } else {
         if (user_permission_level & Master) {

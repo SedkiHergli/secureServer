@@ -69,15 +69,12 @@ exports.patchByEmail = (req, res) => {
 };
 
 exports.removeByEmail = (req, res) => {
-    SupervisorModel.find({email: req.params.email})
-        .then((result) => {
-            SupervisorModel.removeById(result._id)
+            SupervisorModel.removeById(req.params.email)
             .then((result)=>{
             res.status(204).send({});
         }).catch(function (error) {
             console.error(error)
           });
-    }).catch(function (error) {
-        console.error(error)
-      });
+   
+      
 };

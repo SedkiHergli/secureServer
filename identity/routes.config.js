@@ -76,10 +76,10 @@ exports.routesConfig = function (app) {
     app.patch('/users/:email', [
         AuthorizationValidation.validJWTNeeded,
         AuthorizationPermission.minimumPermissionLevelRequired(Member),
-        AuthorizationPermission.onlySameUserOrAdminCanDoThisAction,
+        AuthorizationPermission.onlySameUserOrAdminOrSupervisorCanDoThisAction,
         IdentityProvider.patchByEmail
     ]);
-    app.delete('/users/:userId', [
+    app.delete('/users/:email', [
         AuthorizationValidation.validJWTNeeded,
         AuthorizationPermission.minimumPermissionLevelRequired(Master),
         AuthorizationPermission.sameUserCantDoThisAction,
@@ -90,13 +90,13 @@ exports.routesConfig = function (app) {
     app.patch('/supers/:email', [
         AuthorizationValidation.validJWTNeeded,
         AuthorizationPermission.minimumPermissionLevelRequired(Member),
-        AuthorizationPermission.onlySameUserOrAdminCanDoThisAction,
+        AuthorizationPermission.onlySameUserOrAdminOrSupervisorCanDoThisAction,
         SupervisorProvider.patchByEmail
     ]);
-    app.delete('/supers/:userId', [
+    app.delete('/supers/:email', [
         AuthorizationValidation.validJWTNeeded,
-        AuthorizationPermission.minimumPermissionLevelRequired(Master),
-        AuthorizationPermission.sameUserCantDoThisAction,
+        AuthorizationPermission.minimumPermissionLevelRequired(Member),
+        AuthorizationPermission.onlySameUserOrAdminOrSupervisorCanDoThisAction,
         SupervisorProvider.removeByEmail
     ]);
 };

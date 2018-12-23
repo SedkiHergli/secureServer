@@ -71,13 +71,11 @@ exports.patchByEmail = (req, res) => {
 };
 
 exports.removeByEmail = (req, res) => {
-    IdentityModel.find({email: req.params.email})
-        .then((result) => {
-            IdentityModel.removeById(result._id)
+            IdentityModel.removeById(req.params.email)
             .then((result)=>{
             res.status(204).send({});
         }).catch(function (error) {
             console.error(error)
           });
-    });
+   
 };
