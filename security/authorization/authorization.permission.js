@@ -10,6 +10,7 @@ exports.minimumPermissionLevelRequired = (required_permission_level) => {
         if (user_permission_level & required_permission_level) {
             return next();
         } else {
+            
             return res.status(403).send({"error":"You don't have the permession Member!!"});
         }
     };
@@ -34,7 +35,6 @@ exports.onlySameUserOrAdminCanDoThisAction = (req, res, next) => {
 
 
 exports.onlySameUserOrAdminOrSupervisorCanDoThisAction = (req, res, next) => {
-
     let user_permission_level = parseInt(req.jwt.roles);
     let email = req.jwt.email;
     let email_s = req.jwt.email_s;

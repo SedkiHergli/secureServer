@@ -10,7 +10,7 @@ exports.validJWTNeeded = (req, res, next) => {
         try {
             let authorization = req.headers['authorization'].split(' ');
             if (authorization[0] !== 'Bearer') {
-                return res.status(401).send();
+                return res.status(401).send({"error":"No Token"});
             } else {
                 //var aud = 'urn:'+(req.get('origin')?req.get('origin'):"kaaniche.xyz");
                 req.jwt = jwt.verify(authorization[1], cert, {algorithms: ['RS512']});
