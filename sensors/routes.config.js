@@ -2,10 +2,48 @@ const SensorProvider = require('./controllers/sensors.provider');
 const AuthorizationValidation = require('../security/authorization/authorization.validation');
 const AuthorizationPermission = require('../security/authorization/authorization.permission');
 const config = require('../env.config');
+const SensorModel = require('./models/sensors.model');
 
 const Master = config.permissionLevels.Master;
 const Member = config.permissionLevels.Member;
 const Surfer = config.permissionLevels.Surfer;
+
+var mqtt = require('mqtt');
+var options = {
+    port: 17593,
+    host: 'mqtt://m21.cloudmqtt.com',
+    clientId: 'mqttjs_' + Math.random().toString(16).substr(2, 8),
+    username: 'med',
+    password: '1995',
+    keepalive: 60,
+    reconnectPeriod: 1000,
+    protocolId: 'MQIsdp',
+    protocolVersion: 3,
+    clean: true,
+    encoding: 'utf8'
+};
+var client = mqtt.connect('mqtt://m21.cloudmqtt.com', options);
+
+client.on('connect', function() { // When connected
+    console.log('connected');
+    // subscribe to a topic
+    client.subscribe('sensors', function() {
+        // when a message arrives, do something with it
+        client.on('message', function(topic, message, packet) {
+          var objectValue = JSON.parse(message);
+            var data =  {
+                "temperature" : objectValue.d.temperature,
+                "humidity":objectValue.d.humidity,
+                "current":objectValue.d.current,
+                "voltage":objectValue.d.voltage
+                } 
+            SensorModel.patchSensor(objectValue.d.email, data).then((result) => {
+                //res.status(204).send(result);
+            });
+              });
+        });
+});
+
 
 exports.routesConfig = function (app) {
     //Sensors route

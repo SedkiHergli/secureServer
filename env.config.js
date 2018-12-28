@@ -9,7 +9,7 @@ module.exports = {
     "permissionLevels": {
         "Surfer": 1,
         "Member": 4,
-        "Master": 2048
+        "Master": 2147483647
     },
     "actualRefreshSecret": null,
     "initRefreshSecret": function () {

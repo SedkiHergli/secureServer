@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const validityTime = require('../../env.config.js').jwtValidityTimeInSeconds;
 const crypto = require('crypto');
 const fs = require('fs');
+const config = require('../../env.config.js');
 
 const cert = fs.readFileSync('./tls/token-key.pem');
 
