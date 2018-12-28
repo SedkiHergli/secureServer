@@ -3,6 +3,8 @@ const config = require('./env.config.js');
 const express = require('express');
 const main = express();
 const bodyParser = require('body-parser');
+const PORT = process.env.PORT || config.port;
+
 
 const SecurityRouter = require('./security/routes.config');
 const IdentityRouter = require('./identity/routes.config');
@@ -45,7 +47,7 @@ LocationRouter.routesConfig(main);
 SensorRouter.routesConfig(main);
 EmergencyRouter.routesConfig(main);
 
-tls.createServer(options, main).listen(config.port, (error) => {
+tls.createServer(options, main).listen(PORT, (error) => {
         if (error) {
             console.error(error);
             return process.exit(1)
