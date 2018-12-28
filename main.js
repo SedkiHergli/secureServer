@@ -12,7 +12,7 @@ const SensorRouter = require('./sensors/routes.config');
 
 config.initRefreshSecret();
 
-//voir Helmet.md
+//voir  Helmet.md
 const tls = require('spdy'); //http2 + https (tls)
 const fs = require('fs');
 let helmet = require('helmet');//pour sécuriser TLS
