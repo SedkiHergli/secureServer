@@ -17,7 +17,7 @@ exports.login = (req, res) => {
         let refresh_token = salt+'$'+b.toString('base64');
         res.status(201).send({accessToken: token, refreshToken: refresh_token});
     } catch (err) {
-        res.status(500).send({errors: err});
+        res.status(500).send({"error": err});
     }
 };
 
@@ -29,7 +29,7 @@ exports.refresh_token = (req, res) => {
         let token = jwt.sign(req.body,cert, { algorithm: 'RS512'});
         res.status(201).send({access_token: token});
     } catch (err) {
-        res.status(500).send({errors: err});
+        res.status(500).send({"error": err});
     }
 };
 
@@ -38,6 +38,6 @@ exports.resetRefreshSecret = (req, res) => {
         config.initRefreshSecret();
         res.status(204).send({});
     }catch (err) {
-        res.status(500).send({errors: err});
+        res.status(500).send({"error": err});
     }
 };

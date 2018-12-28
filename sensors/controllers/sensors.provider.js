@@ -5,7 +5,7 @@ exports.insert = (req, res) => {
     SensorModel.createSensor(req.body)
     .then((result) => {
         res.status(201).send({id: result._id});
-    },(err) => { console.log(err); });    
+    },(err) => { res.status(400).send({"error":"We can't create sensor table"});});    
 };
 
 exports.list = (req, res) => {

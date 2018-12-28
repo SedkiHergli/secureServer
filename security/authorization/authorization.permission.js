@@ -57,7 +57,7 @@ exports.sameUserCantDoThisAction = (req, res, next) => {
     if (req.params.userId !== userId) {
         return next();
     } else {
-        return res.status(400).send();
+        return res.status(400).send({"error":"Only User Can Do This !"});
     }
 
 };

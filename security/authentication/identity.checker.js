@@ -15,12 +15,12 @@ exports.hasAuthValidFields = (req, res, next) => {
         }
 
         if (errors.length) {
-            return res.status(400).send({errors: errors.join(',')});
+            return res.status(400).send({"error": errors.join(',')});
         } else {
             return next();
         }
     } else {
-        return res.status(400).send({errors: 'Missing email and password fields'});
+        return res.status(400).send({"error": 'Missing email and password fields'});
     }
 };
 
@@ -28,7 +28,7 @@ exports.isPasswordAndUserMatch = (req, res, next) => {
     IdentityModel.findByEmail(req.body.email)
         .then((user)=>{
             if(!user[0]){
-                res.status(404).send({});
+                res.status(404).send({"error":"user does not exist !"});
             }else{
                 let passwordFields = user[0].password.split('$');
                 let salt = passwordFields[0];
@@ -56,7 +56,7 @@ exports.isPasswordAndUserMatch = (req, res, next) => {
                     };
                     return next();
                 } else {
-                    return res.status(400).send({errors: ['Invalid e-mail or password']});
+                    return res.status(400).send({"error": 'Invalid e-mail or password'});
                 }
             }}).catch((err) => next(err));
 };
@@ -65,7 +65,7 @@ exports.isUserStillExistsWithSamePrivileges = (req, res, next) => {
     IdentityModel.findByEmail(req.body.email)
         .then((user)=>{
             if(!user[0]){
-                res.status(404).send({});
+                res.status(404).send({"error":"Does not Exists With Same Privileges"});
             }
             req.body.roles = user[0].permissionLevel;
             return next();
