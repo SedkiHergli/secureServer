@@ -25,7 +25,7 @@ var options = {
 var client = mqtt.connect('mqtt://m21.cloudmqtt.com', options);
 
 client.on('connect', function() { // When connected
-    console.log('connected');
+    console.log('connected to cloud mqtt');
     // subscribe to a topic
     client.subscribe('sensors', function() {
         // when a message arrives, do something with it
