@@ -1,5 +1,6 @@
 const SupervisorModel = require('../models/supervisor.model');
 const crypto = require('crypto');
+
 exports.insert = (req, res) => {
             let salt = crypto.randomBytes(16).toString('base64');
             let hash = crypto.scryptSync(req.body.password,salt,64,{N:16384}).toString("base64");
@@ -43,15 +44,13 @@ let salt = crypto.randomBytes(16).toString('base64');
         let hash = crypto.scryptSync(req.body.password,salt,64,{N:16384}).toString("base64");
         req.body.password = salt + "$" + hash;
     }
-    SupervisorModel.find({email: req.params.email})
-        .then((result) => {
-            SupervisorModel.putSupervisor(result._id, req.body)
+
+            SupervisorModel.putSupervisor(req.params.email, req.body)
             .then((result)=>{
             req.status(204).send({});
         }).catch(function (error) {
             console.error(error)
-          });
-    });    
+          });  
 };
 
 exports.patchByEmail = (req, res) => {

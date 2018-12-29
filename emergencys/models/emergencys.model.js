@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const config = require('../../env.config');
-mongoose.connect(config.server_url,{useCreateIndex: true,useNewUrlParser: true});
+mongoose.connect(config.server_url,{useCreateIndex: true,useNewUrlParser: true,useFindAndModify:false});
 const Schema = mongoose.Schema;
 
 const emergencySchema = new Schema({
@@ -61,11 +61,14 @@ exports.list = (perPage, page) => {
 
 exports.putEmergency = (id,EmergencyData) => {
     return new Promise((resolve, reject) => {
-        Emergency.findByIdAndUpdate(id,EmergencyData,function (err,user) {
+        EmergencyModel.find({email: id})
+        .then((result) => {
+        Emergency.findByIdAndUpdate(result._id,EmergencyData,function (err,user) {
             if (err) reject(err);
             resolve(user);
         });
     });
+});
 };
 
 exports.patchEmergency = (email, userData) => {
@@ -81,13 +84,13 @@ exports.patchEmergency = (email, userData) => {
 
 exports.removeById = (userId) => {
     return new Promise((resolve, reject) => {
-        Emergency.remove({_id: userId}, (err) => {
+        Emergency.deleteOne({email: userId}, (err) => {
             if (err) {
                 reject(err);
             } else {
                 resolve(err);
             }
         });
-    });
+});
 };
 

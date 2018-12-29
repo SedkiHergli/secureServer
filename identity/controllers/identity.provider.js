@@ -1,5 +1,6 @@
 const IdentityModel = require('../models/identity.model');
 const crypto = require('crypto');
+
 exports.insert = (req, res) => {
     let salt = crypto.randomBytes(16).toString('base64');
     let hash = crypto.scryptSync(req.body.password,salt,64,{N:16384}).toString("base64");
@@ -12,6 +13,7 @@ exports.insert = (req, res) => {
             console.error(error)
           });    
 };
+
 exports.list = (req, res) => {
     let limit = req.query.limit && req.query.limit <= 100 ? parseInt(req.query.limit) : 10;
     let page = 0;
@@ -44,17 +46,14 @@ exports.putByEmail = (req, res) => {
         let hash = crypto.scryptSync(req.body.password,salt,64,{N:16384}).toString("base64");
         req.body.password = salt + "$" + hash;
     }
-    IdentityModel.find({email: req.params.email})
-        .then((result) => {
-            IdentityModel.putIdentity(result._id, req.body)
+
+            IdentityModel.putIdentity(req.params.email, req.body)
             .then((result)=>{
             req.status(204).send({});
         }).catch(function (error) {
             console.error(error)
           });
-    }).catch(function (error) {
-        console.error(error)
-      });    
+   
 };
 
 exports.patchByEmail = (req, res) => {

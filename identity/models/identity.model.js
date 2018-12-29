@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const config = require('../../env.config');
-mongoose.connect(config.server_url,{useCreateIndex: true,useNewUrlParser: true});
+mongoose.connect(config.server_url,{useCreateIndex: true,useNewUrlParser: true,useFindAndModify:false});
 const Schema = mongoose.Schema;
 
 const identiySchema = new Schema({
@@ -71,10 +71,14 @@ exports.list = (perPage, page) => {
 
 exports.putIdentity = (id,identityData) => {
     return new Promise((resolve, reject) => {
-        Identity.findByIdAndUpdate(id,identityData,function (err,user) {
+        Identity.find({email: id}).then(respp=>{
+        Identity.findByIdAndUpdate(respp._id,identityData,function (err,user) {
             if (err) reject(err);
             resolve(user);
         });
+    }).catch(function (error) {
+        console.error(error)
+      });
     });
 };
 

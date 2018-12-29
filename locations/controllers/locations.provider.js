@@ -32,13 +32,10 @@ exports.getByEmail = (req, res) => {
 };
 
 exports.putByEmail = (req, res) => {
-    LocationModel.find({email: req.params.email})
-        .then((result) => {
-            LocationModel.putLocation(result._id, req.body)
+            LocationModel.putLocation(req.params.email, req.body)
             .then((result)=>{
             req.status(204).send({});
         });
-    });
 };
 
 exports.patchByEmail = (req, res) => {
@@ -48,11 +45,8 @@ exports.patchByEmail = (req, res) => {
 };
 
 exports.removeByEmail = (req, res) => {
-    LocationModel.find({email: req.params.email})
-        .then((result) => {
-        LocationModel.removeById(result._id)
+        LocationModel.removeById(req.params.email)
             .then((result)=>{
             res.status(204).send({});
         });
-    });
 };

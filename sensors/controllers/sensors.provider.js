@@ -33,13 +33,12 @@ exports.getByEmail = (req, res) => {
 };
 
 exports.putByEmail = (req, res) => {
-    SensorModel.find({email: req.params.email})
-        .then((result) => {
-            SensorModel.putSensor(result._id, req.body)
+
+            SensorModel.putSensor(req.params.email, req.body)
             .then((result)=>{
             req.status(204).send({});
         });
-    });
+
 };
 
 exports.patchByEmail = (req, res) => {
@@ -49,11 +48,10 @@ exports.patchByEmail = (req, res) => {
 };
 
 exports.removeByEmail = (req, res) => {
-    SensorModel.find({email: req.params.email})
-        .then((result) => {
-        SensorModel.removeById(result._id)
+        SensorModel.removeById(req.params.email)
             .then((result)=>{
             res.status(204).send({});
-        });
-    });
+        }).catch(function (error) {
+            console.error(error)
+          });;
 };

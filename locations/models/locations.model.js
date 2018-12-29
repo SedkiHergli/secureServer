@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const config = require('../../env.config');
-mongoose.connect(config.server_url,{useCreateIndex: true,useNewUrlParser: true});
+mongoose.connect(config.server_url,{useCreateIndex: true,useNewUrlParser: true,useFindAndModify:false});
 const Schema = mongoose.Schema;
 
 const locationSchema = new Schema({
@@ -62,11 +62,14 @@ exports.list = (perPage, page) => {
 
 exports.putLocation = (id,LocationData) => {
     return new Promise((resolve, reject) => {
-        Location.findByIdAndUpdate(id,LocationData,function (err,user) {
+        LocationModel.find({email: id})
+        .then((result) => {
+        Location.findByIdAndUpdate(result._id,LocationData,function (err,user) {
             if (err) reject(err);
             resolve(user);
         });
     });
+});
 };
 
 exports.patchLocation = (email, userData) => {
@@ -82,7 +85,7 @@ exports.patchLocation = (email, userData) => {
 
 exports.removeById = (userId) => {
     return new Promise((resolve, reject) => {
-        Location.remove({_id: userId}, (err) => {
+        Location.deleteOne({email: userId}, (err) => {
             if (err) {
                 reject(err);
             } else {

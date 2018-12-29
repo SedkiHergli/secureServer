@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const config = require('../../env.config');
-mongoose.connect(config.server_url,{useCreateIndex: true,useNewUrlParser: true});
+mongoose.connect(config.server_url,{useCreateIndex: true,useNewUrlParser: true,useFindAndModify:false});
 const Schema = mongoose.Schema;
 
 const sensorSchema = new Schema({
@@ -68,11 +68,14 @@ exports.list = (perPage, page) => {
 
 exports.putSensor = (id,SensorData) => {
     return new Promise((resolve, reject) => {
-        Sensor.findByIdAndUpdate(id,SensorData,function (err,user) {
+        SensorModel.find({email: id})
+        .then((result) => {
+        Sensor.findByIdAndUpdate(result._id,SensorData,function (err,user) {
             if (err) reject(err);
             resolve(user);
         });
     });
+});
 };
 
 exports.patchSensor = (email, userData) => {
@@ -87,7 +90,7 @@ exports.patchSensor = (email, userData) => {
 
 exports.removeById = (userId) => {
     return new Promise((resolve, reject) => {
-        Sensor.remove({_id: userId}, (err) => {
+        Sensor.deleteOne({email: userId}, (err) => {
             if (err) {
                 reject(err);
             } else {

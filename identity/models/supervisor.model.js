@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const config = require('../../env.config');
-mongoose.connect(config.server_url,{useCreateIndex: true,useNewUrlParser: true});
+mongoose.connect(config.server_url,{useCreateIndex: true,useNewUrlParser: true,useFindAndModify:false});
 const Schema = mongoose.Schema;
 
 const superSchema = new Schema({
@@ -68,11 +68,14 @@ exports.list = (perPage, page) => {
 
 exports.putSupervisor = (id,SupervisorData) => {
     return new Promise((resolve, reject) => {
-        Supervisor.findByIdAndUpdate(id,SupervisorData,function (err,user) {
+        Supervisor.find({email: id})
+        .then((result) => {
+        Supervisor.findByIdAndUpdate(result._id,SupervisorData,function (err,user) {
             if (err) reject(err);
             resolve(user);
         });
     });
+});
 };
 
 exports.patchSupervisor = (email, userData) => {

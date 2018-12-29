@@ -7,7 +7,7 @@ exports.insert = (req, res) => {
         res.status(201).send({id: result._id});
     },(err) => { console.log(err); });    
 };
-
+ 
 exports.list = (req, res) => {
     let limit = req.query.limit && req.query.limit <= 100 ? parseInt(req.query.limit) : 10;
     let page = 0;
@@ -33,13 +33,10 @@ exports.getByEmail = (req, res) => {
 };
 
 exports.putByEmail = (req, res) => {
-    EmergencyModel.find({email: req.params.email})
-        .then((result) => {
-            EmergencyModel.putEmergency(result._id, req.body)
+            EmergencyModel.putEmergency(req.params.email, req.body)
             .then((result)=>{
             req.status(204).send({});
         });
-    });
 };
 
 exports.patchByEmail = (req, res) => {
@@ -49,11 +46,8 @@ exports.patchByEmail = (req, res) => {
 };
 
 exports.removeByEmail = (req, res) => {
-    EmergencyModel.find({email: req.params.email})
-        .then((result) => {
-        EmergencyModel.removeById(result._id)
+        EmergencyModel.removeById(req.params.email)
             .then((result)=>{
             res.status(204).send({});
         });
-    });
 };
